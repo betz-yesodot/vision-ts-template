@@ -1,39 +1,30 @@
 import { Response } from 'express';
 import { TypedRequest } from '../../utils/zod.js';
-import { FeaturesManager } from './manager.js';
+import { ServicesManager } from './manager.js';
 import {
     createOneRequestSchema,
     deleteOneRequestSchema,
-    getByIdRequestSchema,
-    getByQueryRequestSchema,
-    getCountRequestSchema,
+    getAllQueryRequestSchema,
     updateOneRequestSchema,
 } from './validations.js';
 
-export class FeaturesController {
-    static getByQuery = async (req: TypedRequest<typeof getByQueryRequestSchema>, res: Response) => {
-        const { step, limit, ...query } = req.query;
+export class ServicessController {
+    static getAllQuery = async (_req: TypedRequest<typeof getAllQueryRequestSchema>, res: Response) => {
 
-        res.json(await FeaturesManager.getByQuery(query, step, limit));
-    };
-
-    static getCount = async (req: TypedRequest<typeof getCountRequestSchema>, res: Response) => {
-        res.json(await FeaturesManager.getCount(req.query));
-    };
-
-    static getById = async (req: TypedRequest<typeof getByIdRequestSchema>, res: Response) => {
-        res.json(await FeaturesManager.getById(req.params.id));
+        res.json(await ServicesManager.getAllQuery());
     };
 
     static createOne = async (req: TypedRequest<typeof createOneRequestSchema>, res: Response) => {
-        res.json(await FeaturesManager.createOne(req.body));
+        res.json(await ServicesManager.createOne(req.body));
     };
 
     static updateOne = async (req: TypedRequest<typeof updateOneRequestSchema>, res: Response) => {
-        res.json(await FeaturesManager.updateOne(req.params.id, req.body));
+        const {  status, ...query } = req.query;
+
+        res.json(await ServicesManager.updateOne(req.params.id, {status}));
     };
 
     static deleteOne = async (req: TypedRequest<typeof deleteOneRequestSchema>, res: Response) => {
-        res.json(await FeaturesManager.deleteOne(req.params.id));
+        res.json(await ServicesManager.deleteOne(req.params.id));
     };
 }
