@@ -19,9 +19,7 @@ export class ServicessController {
     };
 
     static updateOne = async (req: TypedRequest<typeof updateOneRequestSchema>, res: Response) => {
-        const {  status, ...query } = req.query;
-
-        res.json(await ServicesManager.updateOne(req.params.id, {status}));
+        res.json(await ServicesManager.updateOne(req.params.id, req.body));
     };
 
     static deleteOne = async (req: TypedRequest<typeof deleteOneRequestSchema>, res: Response) => {
